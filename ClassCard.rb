@@ -5,28 +5,19 @@ class ClassCard
 
   attr_accessor :class_type, :rand_class_num
 
-  def initialize(player, same_class = true, other_player = nil)
+  def initialize(player, same_class = true, other_player = nil, player_selection = nil)
 
-    if same_class
-      class_type_num = rand(2)
-
-      if class_type_num == 0
+    if player_selection
+      if player_selection == 0
         @class_type = Sorcerer.new()
-      elsif class_type_num == 1
+      elsif player_selection == 1
         @class_type = Barbarian.new()
-      else
-        puts "error! random set too high!"
       end
-
     else
 
-      if other_player == 0
-        @class_type = Barbarian.new()
-      elsif other_player == 1
-        @class_type = Sorcerer.new()
-      else
+      if same_class
         class_type_num = rand(2)
-        @rand_class_num = class_type_num
+
         if class_type_num == 0
           @class_type = Sorcerer.new()
         elsif class_type_num == 1
@@ -34,6 +25,25 @@ class ClassCard
         else
           puts "error! random set too high!"
         end
+
+      else
+
+        if other_player == 0
+          @class_type = Barbarian.new()
+        elsif other_player == 1
+          @class_type = Sorcerer.new()
+        else
+          class_type_num = rand(2)
+          @rand_class_num = class_type_num
+          if class_type_num == 0
+            @class_type = Sorcerer.new()
+          elsif class_type_num == 1
+            @class_type = Barbarian.new()
+          else
+            puts "error! random set too high!"
+          end
+        end
+
       end
 
     end
@@ -48,9 +58,14 @@ class ClassCard
     return @class_type.health
   end
 
-  def attack()
-    rand_num = rand(2)
-    return @class_type.attack[rand_num]
+  def attack(attack_skill = nil)
+    if attack_skill
+      return @class_type.attack[attack_skill]
+    else
+      rand_num = rand(2)
+      return @class_type.attack[rand_num]
+    end
+
   end
 
   def defend(attack_value)
